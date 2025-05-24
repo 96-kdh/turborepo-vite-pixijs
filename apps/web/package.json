@@ -1,0 +1,38 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --clearScreen false",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@pixi/react": "7",
+    "@reown/appkit": "1.6.8",
+    "@reown/appkit-adapter-wagmi": "1.6.8",
+    "@tanstack/react-query": "^5.56.2",
+    "@tonconnect/ui-react": "^2.1.0",
+    "pixi.js": "7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "viem": "^2.21.53",
+    "wagmi": "^2.13.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.7",
+    "@tanstack/eslint-plugin-query": "^5.74.7",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^3.1.0",
+    "@workspace/eslint-config": "workspace:^",
+    "@workspace/typescript-config": "workspace:^",
+    "@workspace/ui": "workspace:^",
+    "eslint": "^8.57.0",
+    "typescript": "5.5.4",
+    "vite": "^5.1.4",
+    "vite-plugin-pages": "^0.33.0"
+  }
+}

@@ -1,0 +1,29 @@
+html,
+body {
+    height: 100dvh;
+    max-width: 100vw;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--sidebar-ring) var(--sidebar);
+}
+
+button {
+    cursor: pointer;
+}
+
+/* 모든 number input의 스피너 제거 */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.missingField {
+    border: 1px solid var(--destructive);
+}
+
+
