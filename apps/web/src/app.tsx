@@ -17,6 +17,8 @@ interface Reel {
 }
 
 function ReelTicker({ reels, setReels }: { reels: Reel[]; setReels: React.Dispatch<React.SetStateAction<Reel[]>> }) {
+   console.log(reels);
+
    useTick((delta) => {
       setReels((prev) =>
          prev.map((reel) => {
