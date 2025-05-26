@@ -30,8 +30,6 @@
     "@workspace/eslint-config": "workspace:^",
     "@workspace/typescript-config": "workspace:^",
     "@workspace/ui": "workspace:^",
-    "eslint": "^8.57.0",
-    "typescript": "5.5.4",
     "vite": "^5.1.4",
     "vite-plugin-pages": "^0.33.0"
   }

@@ -1,0 +1,8 @@
+{
+  "extends": "@workspace/typescript-config/sam.json",
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}

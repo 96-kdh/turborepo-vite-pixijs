@@ -1,0 +1,13 @@
+{
+  "name": "docker-dev",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "bash -c \"trap 'docker compose down' EXIT; docker compose up\"",
+    "postdev": "docker compose down",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.4.1"
+}

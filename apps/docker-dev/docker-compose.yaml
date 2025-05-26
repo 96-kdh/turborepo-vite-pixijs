@@ -1,0 +1,14 @@
+services:
+  bot-tunnel:
+    image: node:18-alpine
+    container_name: bot-tunnel
+
+    working_dir: /usr/src/app
+    volumes:
+      # 코드와 스크립트, 그리고 env.local.json
+      - ./:/usr/src/app
+      - ../aws-sam/env.local.json:/usr/src/app/env.local.json:ro
+      - ./scripts/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
+
+    # 스크립트 자체를 ENTRYPOINT 로 실행
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
