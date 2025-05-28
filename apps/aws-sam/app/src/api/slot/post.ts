@@ -1,6 +1,5 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-
-import { CustomResponse } from "../utils";
+import { CustomResponse } from "utils";
 
 // 슬롯머신 기호(symbols)와 당첨 테이블
 const symbols = ["🍒", "🍋", "🔔", "7", "⭐", "🍉"];

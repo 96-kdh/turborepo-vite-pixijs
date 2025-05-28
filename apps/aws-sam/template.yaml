@@ -64,8 +64,8 @@ Resources:
   TelegramWebHookFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: app/
-      Handler: app.telegramWebHookHandler
+      CodeUri: app/src/api/bot/telegram-webhook/
+      Handler: post.telegramWebHookHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -89,12 +89,12 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-        - app.ts
+        - post.ts
   SpinPostFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: app/
-      Handler: app.spinPostHandler
+      CodeUri: app/src/api/slot/
+      Handler: post.spinPostHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
@@ -118,4 +118,4 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - app.ts
+          - post.ts

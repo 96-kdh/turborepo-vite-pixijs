@@ -1,6 +1,5 @@
 import { Telegraf } from "telegraf";
-
-import { CustomResponse } from "../utils";
+import { CustomResponse } from "utils";
 
 // Lambda 시작 시 한 번만 인스턴스 생성 (휘발성이나, 자주 실행되면 메모리에 기억되어있음)
 const bot = new Telegraf(process.env.BOT_TOKEN!);

@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 
-import { telegramWebHookHandler } from "../../app";
+import { telegramWebHookHandler } from "api/bot/telegram-webhook/post";
 
 // 1) Telegraf 모듈 전체를 factory 클로저로 mock 처리
 jest.mock("telegraf", () => {
