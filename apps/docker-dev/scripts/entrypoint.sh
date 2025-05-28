@@ -4,7 +4,7 @@
 apk --no-cache add curl
 
 # env.local.json 에서 BOT_TOKEN 읽기
-BOT_TOKEN=$(node -p "require('./env.local.json').HelloWorldFunction.BOT_TOKEN")
+BOT_TOKEN=$(node -p "require('./env.local.json').TelegramWebHookFunction.BOT_TOKEN")
 echo "▶ Using BOT_TOKEN=$BOT_TOKEN"
 
 # LocalTunnel 실행 (호스트의 3001 → 컨테이너 내부)
@@ -24,7 +24,7 @@ echo "▶ LocalTunnel URL detected: $URL"
 
 # Webhook 한 번 등록
 curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/setWebhook" \
-     -d "url=${URL}/telegram-webhook"
+     -d "url=${URL}/bot/telegram-webhook"
 echo "✅ Webhook registration complete."
 
 # 터널 프로세스가 살아있는 한 컨테이너 유지

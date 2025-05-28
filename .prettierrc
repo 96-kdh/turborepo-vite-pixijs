@@ -9,5 +9,14 @@
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrder": ["<THIRD_PARTY_MODULES>", "^@workspace/(.*)$", "^@/(.*)$", "^[./]"],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+
+  "overrides": [
+    {
+      "files": ["**/*.test.ts"],
+      "options": {
+        "plugins": []
+      }
+    }
+  ]
 }

@@ -18,20 +18,66 @@ Globals:
     Timeout: 3
 
 Resources:
-  HelloWorldFunction:
+
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub
+        - ${ResourceName} From Stack ${AWS::StackName}
+        - ResourceName: EventWebHookAPI
+      StageName: !Ref Environment
+      EndpointConfiguration: REGIONAL
+      # TracingEnabled: true
+      Cors:
+        AllowMethods: "'GET, OPTIONS, POST, DELETE, PUT, PATCH'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+        MaxAge: "'500'"
+      Auth:
+        ApiKeyRequired: true # 각 연결된 람다에서 require key 속성을 false 로 변경해야함
+        AddDefaultAuthorizerToCorsPreflight: false
+        AddApiKeyRequiredToCorsPreflight: false
+      CacheClusterEnabled: true
+      CacheClusterSize: "0.5"
+  ApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Enabled: true
+  UsagePlanNoLimit:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn:
+      - Api
+    Properties:
+      ApiStages:
+        - ApiId: !Ref Api
+          Stage: !Ref Environment
+  UsagePlanMapReporting:
+    Type: AWS::ApiGateway::UsagePlanKey
+    DependsOn:
+      - UsagePlanNoLimit
+    Properties:
+      KeyId: !Ref ApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref UsagePlanNoLimit
+
+
+  TelegramWebHookFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: app/
-      Handler: app.telegramWebHook
+      Handler: app.telegramWebHookHandler
       Runtime: nodejs20.x
       Architectures:
         - x86_64
       Events:
-        HelloWorld:
+        TelegramWebHook:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /telegram-webhook
+            Path: /bot/telegram-webhook
             Method: POST
+            RestApiId: !Ref Api
+            Auth:
+              ApiKeyRequired: false
       Environment:
         Variables:
           BOT_TOKEN: !Sub "{{resolve:ssm-secure:/myapp/${Environment}/BotToken}}"
@@ -44,3 +90,32 @@ Resources:
         Sourcemap: true
         EntryPoints:
         - app.ts
+  SpinPostFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: app/
+      Handler: app.spinPostHandler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Events:
+        TelegramWebHook:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /slot
+            Method: POST
+            RestApiId: !Ref Api
+            Auth:
+              ApiKeyRequired: false
+      Environment:
+        Variables:
+          BOT_TOKEN: !Sub "{{resolve:ssm-secure:/myapp/${Environment}/BotToken}}"
+          CLIENT_URL: !Sub "{{resolve:ssm-secure:/myapp/${Environment}/ClientUrl}}"
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - app.ts

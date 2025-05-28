@@ -1,24 +1,24 @@
 // SlotMachine.tsx
 import { Container, Stage, Text, useTick } from "@pixi/react";
+import axios from "axios";
 import * as PIXI from "pixi.js";
 import React, { useMemo, useRef, useState } from "react";
 
 import "./SlotMachine.css";
 
+const mockServerSpin = async (
+   _point: number,
+): Promise<{ centerSymbols: string[]; payout: number; newPoints: number }> => {
+   const res = await axios.post("http://localhost:3001/slot", {
+      currentPoints: _point,
+   });
+   return res.data;
+};
+
 const symbols = ["🍒", "🍋", "🔔", "7", "⭐", "🍉"];
 const ReelCount = 3;
 const SymbolSize = 100;
 const ReelSymbols = 6;
-
-// RTP 모델
-const outcomeTable = [
-   { symbol: "🍉", prob: 0.001, payout: 350 },
-   { symbol: "⭐", prob: 0.009, payout: 25 },
-   { symbol: "7", prob: 0.05, payout: 4 },
-   { symbol: "🔔", prob: 0.05, payout: 2 },
-   { symbol: "🍒", prob: 0.1, payout: 1 },
-];
-// 나머지 확률 → 꽝, payout: 0
 
 interface Reel {
    symbols: string[];
@@ -44,47 +44,6 @@ function ReelTicker({ reels, setReels }: { reels: Reel[]; setReels: React.Dispat
       );
    });
    return null;
-}
-
-// (2) 서버 로직 시뮬레이터: 포인트 차감 → 당첨 결정 → 새 포인트 반환
-async function mockServerSpin(currentPoints: number): Promise<{
-   centerSymbols: string[];
-   payout: number;
-   newPoints: number;
-}> {
-   await new Promise((res) => setTimeout(res, 500));
-
-   if (currentPoints <= 0) {
-      throw new Error("포인트가 부족합니다.");
-   }
-
-   // ① 당첨/outcome 결정
-   const r = Math.random();
-   let acc = 0;
-   let outcome = { symbol: "", payout: 0 };
-   for (const o of outcomeTable) {
-      acc += o.prob;
-      if (r < acc) {
-         outcome = { symbol: o.symbol, payout: o.payout };
-         break;
-      }
-   }
-
-   let centerSymbols: string[];
-   if (outcome.payout > 0) {
-      // 당첨: 3개 같은 심볼
-      centerSymbols = Array(ReelCount).fill(outcome.symbol);
-   } else {
-      // 꽝: **절대로** 3개 모두 같은 패턴이 안나오게 생성
-      do {
-         centerSymbols = Array.from({ length: ReelCount }).map(
-            () => symbols[Math.floor(Math.random() * symbols.length)]!,
-         );
-      } while (centerSymbols[0] === centerSymbols[1] && centerSymbols[1] === centerSymbols[2]);
-   }
-
-   const newPoints = currentPoints - 1 + outcome.payout;
-   return { centerSymbols, payout: outcome.payout, newPoints };
 }
 
 export default function SlotMachine() {

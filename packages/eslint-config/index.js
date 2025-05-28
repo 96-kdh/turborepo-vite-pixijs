@@ -3,11 +3,7 @@ module.exports = {
       node: true,
    },
    parser: "@typescript-eslint/parser",
-   extends: [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier",
-   ],
+   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
    plugins: ["@typescript-eslint"],
    parserOptions: {
       sourceType: "module",
@@ -15,5 +11,7 @@ module.exports = {
    },
    rules: {
       "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/no-var-requires": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
    },
 };
